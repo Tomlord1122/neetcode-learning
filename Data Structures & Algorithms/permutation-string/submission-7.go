@@ -1,0 +1,45 @@
+func checkInclusion(s1 string, s2 string) bool {
+    s1Map := [26]int{}
+    s2Map := [26]int{}
+    if len(s1) > len(s2){
+        return false
+    }
+    for i := 0; i < len(s1); i++{
+        s1Map[s1[i]-'a']++
+        s2Map[s2[i]-'a']++
+    }
+    
+    matches := 0
+    for i := 0; i < 26; i++{
+        if s1Map[i] == s2Map[i]{
+            matches++
+        }
+    }
+
+    l := 0
+    for r := len(s1); r < len(s2); r++{
+        if matches == 26{
+            return true
+        }
+        // remove s2[l]
+        indexL := s2[l] - 'a'
+        if s1Map[indexL] == s2Map[indexL]{
+            matches--
+        }
+        l++
+        s2Map[indexL]--
+        if s1Map[indexL] == s2Map[indexL]{
+            matches++
+        }
+        // add s2[r] 
+        indexR := s2[r] - 'a'
+        if s1Map[indexR] == s2Map[indexR]{
+            matches--
+        }
+        s2Map[indexR]++
+        if s1Map[indexR] == s2Map[indexR]{
+            matches++
+        }
+    }
+    return matches == 26
+}
